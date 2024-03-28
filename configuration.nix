@@ -131,6 +131,7 @@
      qemu
      syncthingtray
      wine
+     alejandra
   ];
 
   # set up steam features
