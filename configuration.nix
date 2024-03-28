@@ -133,6 +133,8 @@
     syncthingtray
     wine
     alejandra
+    rustc
+    rustup
   ];
 
   # set up steam features
