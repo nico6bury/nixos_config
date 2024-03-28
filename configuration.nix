@@ -1,22 +1,23 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   nixpkgs = {
-  	config = {
-  	  allowUnfree = true;
-  	  packageOverrides = pkgs: {
-  	  	unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
-  	  };
-  	};
+    config = {
+      allowUnfree = true;
+      packageOverrides = pkgs: {
+        unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
+      };
+    };
   };
 
   # Bootloader.
@@ -26,7 +27,7 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -93,52 +94,52 @@
   users.users.nicholass = {
     isNormalUser = true;
     description = "Nicholas Sixbury";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       firefox
       kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
-    
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-     meson
-     ninja
-     git
-     neofetch
-     vlc
-     keepassxc
-     gparted
-     libsForQt5.plasma-browser-integration
-     bash
-     cmake
-     discord
-     steam
-     micro
-     vscodium
-     # unstable.obsidian
-     gnome.cheese
-     obs-studio
-     atlauncher
-     filelight
-     gimp
-     kcalc
-     libreoffice
-     qemu
-     syncthingtray
-     wine
-     alejandra
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
+    meson
+    ninja
+    git
+    neofetch
+    vlc
+    keepassxc
+    gparted
+    libsForQt5.plasma-browser-integration
+    bash
+    cmake
+    discord
+    steam
+    micro
+    vscodium
+    # unstable.obsidian
+    gnome.cheese
+    obs-studio
+    atlauncher
+    filelight
+    gimp
+    kcalc
+    libreoffice
+    qemu
+    syncthingtray
+    wine
+    alejandra
   ];
 
   # set up steam features
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # open ports in firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; 
+    dedicatedServer.openFirewall = true;
   };
 
   # LD Fix from No Boilerplate Video on NixOS
@@ -147,6 +148,14 @@
     # Add any missing dynamic libraries for unpackaged
     # programs here, NOT in environment.systemPackages
   ];
+
+  # enable bash somehow
+  system.activationScripts.binBash = {
+    deps = ["binsh"];
+    test = ''
+      ln -s /bin/sh /bin/bash
+    '';
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -177,5 +186,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }
